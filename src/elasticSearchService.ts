@@ -141,7 +141,7 @@ export class ElasticSearchService implements Search {
             const { total, hits } = await this.executeQuery(params);
             const result: SearchResult = {
                 numberOfResults: total,
-                entries: this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match' }),
+                entries: this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match', tenantUrl : request.tenantUrl }),
                 message: '',
             };
 
@@ -154,6 +154,7 @@ export class ElasticSearchService implements Search {
                         [SEARCH_PAGINATION_PARAMS.COUNT]: size,
                     },
                     resourceType,
+                    request.tenantUrl,
                 );
             }
             if (from + size < total) {
@@ -164,7 +165,8 @@ export class ElasticSearchService implements Search {
                         [SEARCH_PAGINATION_PARAMS.PAGES_OFFSET]: from + size,
                         [SEARCH_PAGINATION_PARAMS.COUNT]: size,
                     },
-                    resourceType,
+                    resourceType, 
+                    request.tenantUrl,
                 );
             }
 
@@ -249,22 +251,28 @@ export class ElasticSearchService implements Search {
         hits,
         baseUrl,
         mode = 'match',
+        tenantUrl,
     }: {
         hits: any[];
         baseUrl: string;
         mode: 'match' | 'include';
+        tenantUrl?: string;
     }): SearchEntry[] {
         return hits.map(
             (hit: any): SearchEntry => {
                 // Modify to return resource with FHIR id not Dynamo ID
                 const resource = this.cleanUpFunction(hit._source);
+                const resourcePath: string =
+                    tenantUrl !== undefined
+                        ? `/${tenantUrl}/${resource.resourceType}/${resource.id}`
+                        : `/${resource.resourceType}/${resource.id}`;
                 return {
                     search: {
                         mode,
                     },
                     fullUrl: URL.format({
                         host: baseUrl,
-                        pathname: `/${resource.resourceType}/${resource.id}`,
+                        pathname: resourcePath,
                     }),
                     resource,
                 };
@@ -360,10 +368,14 @@ export class ElasticSearchService implements Search {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    private createURL(host: string, query: any, resourceType?: string) {
+    private createURL(host: string, query: any, resourceType?: string, tenantUrl?: string) {
+        const resourcePath: string =
+        tenantUrl !== undefined
+            ? `/${tenantUrl}/${resourceType}`
+            : `/${resourceType}`;
         return URL.format({
             host,
-            pathname: `/${resourceType}`,
+            pathname: resourcePath,
             query,
         });
     }
