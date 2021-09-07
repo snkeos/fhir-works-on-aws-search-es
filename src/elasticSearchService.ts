@@ -51,6 +51,8 @@ export class ElasticSearchService implements Search {
 
     private readonly useKeywordSubFields: boolean;
 
+    private readonly buildTenantUrlFunction: (tenantId?: string) => string | undefined;
+
     /**
      * @param searchFiltersForAllQueries - If you are storing both History and Search resources
      * in your elastic search you can filter out your History elements by supplying a list of SearchFilters
@@ -62,6 +64,8 @@ export class ElasticSearchService implements Search {
      * This parameter enables support for search parameters defined in Implementation Guides.
      * @param esClient
      * @param options.useKeywordSubFields - whether or not to append `.keyword` to fields in search queries. You should enable this if you do dynamic mapping
+     *     
+     * @param buildTenantUrlFunction - If multiple tenants are use, this function ensures to provide the tenant sub url part for search set links
      */
     constructor(
         searchFiltersForAllQueries: SearchFilter[] = [],
@@ -72,6 +76,9 @@ export class ElasticSearchService implements Search {
         compiledImplementationGuides?: any,
         esClient: Client = ElasticSearch,
         { useKeywordSubFields = true }: { useKeywordSubFields?: boolean } = {},
+        buildTenantUrlFunction: (tenantId?: string) => string | undefined = function passThrough(tenantId?: string) {
+            return tenantId;
+        },
     ) {
         this.searchFiltersForAllQueries = searchFiltersForAllQueries;
         this.cleanUpFunction = cleanUpFunction;
@@ -79,6 +86,7 @@ export class ElasticSearchService implements Search {
         this.fhirSearchParametersRegistry = new FHIRSearchParametersRegistry(fhirVersion, compiledImplementationGuides);
         this.esClient = esClient;
         this.useKeywordSubFields = useKeywordSubFields;
+        this.buildTenantUrlFunction = buildTenantUrlFunction;
     }
 
     async getCapabilities() {
@@ -109,9 +117,15 @@ export class ElasticSearchService implements Search {
                 );
             }
 
+            const tenantUrl = this.buildTenantUrlFunction(request.tenantId);
+            const tenantIdSearchFilters: SearchFilter[] = ElasticSearchService.buildTenantIdSearchFilter(
+                request.tenantId,
+            );
+
             const filter: any[] = ElasticSearchService.buildElasticSearchFilter([
                 ...this.searchFiltersForAllQueries,
                 ...(searchFilters ?? []),
+                ...tenantIdSearchFilters,
             ]);
             const query = buildQueryForAllSearchParameters(
                 this.fhirSearchParametersRegistry,
@@ -141,7 +155,7 @@ export class ElasticSearchService implements Search {
             const { total, hits } = await this.executeQuery(params);
             const result: SearchResult = {
                 numberOfResults: total,
-                entries: this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match', tenantUrl : request.tenantUrl }),
+                entries: this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match', tenantUrl }),
                 message: '',
             };
 
@@ -154,7 +168,7 @@ export class ElasticSearchService implements Search {
                         [SEARCH_PAGINATION_PARAMS.COUNT]: size,
                     },
                     resourceType,
-                    request.tenantUrl,
+                    tenantUrl,
                 );
             }
             if (from + size < total) {
@@ -165,8 +179,8 @@ export class ElasticSearchService implements Search {
                         [SEARCH_PAGINATION_PARAMS.PAGES_OFFSET]: from + size,
                         [SEARCH_PAGINATION_PARAMS.COUNT]: size,
                     },
-                    resourceType, 
-                    request.tenantUrl,
+                    resourceType,
+                    tenantUrl,
                 );
             }
 
@@ -369,10 +383,7 @@ export class ElasticSearchService implements Search {
 
     // eslint-disable-next-line class-methods-use-this
     private createURL(host: string, query: any, resourceType?: string, tenantUrl?: string) {
-        const resourcePath: string =
-        tenantUrl !== undefined
-            ? `/${tenantUrl}/${resourceType}`
-            : `/${resourceType}`;
+        const resourcePath: string = tenantUrl !== undefined ? `/${tenantUrl}/${resourceType}` : `/${resourceType}`;
         return URL.format({
             host,
             pathname: resourcePath,
@@ -473,6 +484,20 @@ export class ElasticSearchService implements Search {
         }
 
         return parts;
+    }
+
+    private static buildTenantIdSearchFilter(tenantId?: string): SearchFilter[] {
+        const tenantIdSearchFilters: SearchFilter[] = [];
+        if (tenantId !== undefined) {
+            const tenantIdSearchFilter: SearchFilter = {
+                key: 'tenantId',
+                value: [tenantId],
+                comparisonOperator: '==',
+                logicalOperator: 'AND',
+            };
+            tenantIdSearchFilters.push(tenantIdSearchFilter);
+        }
+        return tenantIdSearchFilters;
     }
 
     /**
