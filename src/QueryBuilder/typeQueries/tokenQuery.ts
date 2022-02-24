@@ -5,44 +5,26 @@
 
 import { InvalidSearchParameterError } from 'fhir-works-on-aws-interface';
 import { CompiledSearchParam } from '../../FHIRSearchParametersRegistry';
+import { TokenSearchValue } from '../../FhirQueryParser';
 
-interface TokenSearchParameter {
-    system?: string;
-    code?: string;
-    explicitNoSystemProperty: boolean;
-}
+// Fields that do not have `.keyword` suffix. This is only important if `useKeywordSubFields` is true
+const FIELDS_WITHOUT_KEYWORD = ['id'];
+const SUPPORTED_MODIFIERS: string[] = [];
 
 // eslint-disable-next-line import/prefer-default-export
-export const parseTokenSearchParam = (param: string): TokenSearchParameter => {
-    if (param === '|') {
-        throw new InvalidSearchParameterError(`Invalid token search parameter: ${param}`);
+export function tokenQuery(
+    compiled: CompiledSearchParam,
+    value: TokenSearchValue,
+    useKeywordSubFields: boolean,
+    modifier?: string,
+): any {
+    if (modifier && !SUPPORTED_MODIFIERS.includes(modifier)) {
+        throw new InvalidSearchParameterError(`Unsupported token search modifier: ${modifier}`);
     }
-    const parts = param.split('|');
-    if (parts.length > 2) {
-        throw new InvalidSearchParameterError(`Invalid token search parameter: ${param}`);
-    }
-    let system;
-    let code;
-    let explicitNoSystemProperty = false;
-    if (parts.length === 1) {
-        [code] = parts;
-    } else {
-        [system, code] = parts;
-        if (system === '') {
-            system = undefined;
-            explicitNoSystemProperty = true;
-        }
-        if (code === '') {
-            code = undefined;
-        }
-    }
-    return { system, code, explicitNoSystemProperty };
-};
-
-export function tokenQuery(compiled: CompiledSearchParam, value: string, useKeywordSubFields: boolean): any {
-    const { system, code, explicitNoSystemProperty } = parseTokenSearchParam(value);
+    const { system, code, explicitNoSystemProperty } = value;
     const queries = [];
-    const keywordSuffix = useKeywordSubFields ? '.keyword' : '';
+    const useKeywordSuffix = useKeywordSubFields && !FIELDS_WITHOUT_KEYWORD.includes(compiled.path);
+    const keywordSuffix = useKeywordSuffix ? '.keyword' : '';
 
     // Token search params are used for many different field types. Search is not aware of the types of the fields in FHIR resources.
     // The field type is specified in StructureDefinition, but not in SearchParameter.
@@ -65,12 +47,19 @@ export function tokenQuery(compiled: CompiledSearchParam, value: string, useKeyw
     }
 
     if (code !== undefined) {
+        // '.code', '.coding.code', 'value' came from the original input data, e.g. language in Patient resource:
+        // ${keywordSuffix} came from ElasticSearch field mapping
         const fields = [
             `${compiled.path}.code${keywordSuffix}`, // Coding
             `${compiled.path}.coding.code${keywordSuffix}`, // CodeableConcept
             `${compiled.path}.value${keywordSuffix}`, // Identifier, ContactPoint
-            `${compiled.path}`, // code, boolean, uri, string
+            `${compiled.path}${keywordSuffix}`, // code, uri, string, boolean
         ];
+
+        // accommodate for boolean value when keywordSuffix is used, as .keyword field is not created for boolean value
+        if (useKeywordSuffix) {
+            fields.push(`${compiled.path}`);
+        }
 
         queries.push({
             multi_match: {

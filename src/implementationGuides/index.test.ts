@@ -101,8 +101,7 @@ describe('compile', () => {
                 ],
                 expression:
                     'CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title',
-                xpath:
-                    'f:CapabilityStatement/f:title | f:CodeSystem/f:title | f:ConceptMap/f:title | f:ImplementationGuide/f:title | f:MessageDefinition/f:title | f:OperationDefinition/f:title | f:StructureDefinition/f:title | f:StructureMap/f:title | f:TerminologyCapabilities/f:title | f:ValueSet/f:title',
+                xpath: 'f:CapabilityStatement/f:title | f:CodeSystem/f:title | f:ConceptMap/f:title | f:ImplementationGuide/f:title | f:MessageDefinition/f:title | f:OperationDefinition/f:title | f:StructureDefinition/f:title | f:StructureMap/f:title | f:TerminologyCapabilities/f:title | f:ValueSet/f:title',
             },
         ]);
         await expect(compiled).resolves.toMatchSnapshot();
@@ -137,11 +136,40 @@ describe('compile', () => {
                 base: ['Patient'],
                 expression:
                     "Patient.extension.where(url = 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race').extension.value.code",
-                xpath:
-                    "f:Patient/f:extension[@url='http://hl7.org/fhir/us/core/StructureDefinition/us-core-race']/f:extension/f:valueCoding/f:code/@value",
+                xpath: "f:Patient/f:extension[@url='http://hl7.org/fhir/us/core/StructureDefinition/us-core-race']/f:extension/f:valueCoding/f:code/@value",
             },
         ]);
         await expect(compiled).resolves.toMatchSnapshot();
+    });
+
+    test(`.extension() function - DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')`, async () => {
+        // example extension from https://www.hl7.org/fhir/R4/searchparameter-example-extension.json.html
+        const extensionSearchParam = {
+            resourceType: 'SearchParameter',
+            id: 'example-extension',
+            url: 'http://hl7.org/fhir/SearchParameter/example-extension',
+            name: 'Example Search Parameter on an extension',
+            description: 'Search by url for a participation agreement, which is stored in a DocumentReference',
+            code: 'part-agree',
+            base: ['DocumentReference'],
+            type: 'reference',
+            expression:
+                "DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')",
+            xpath: "f:DocumentReference/f:extension[@url='http://example.org/fhir/StructureDefinition/participation-agreement']",
+            target: ['DocumentReference'],
+        };
+        const compiled = compile([extensionSearchParam]);
+        await expect(compiled).resolves.toMatchSnapshot();
+
+        // .extension('x') is syntactic sugar for extension.where(url = 'x')
+        await expect(compiled).resolves.toEqual(
+            await compile([
+                {
+                    ...extensionSearchParam,
+                    expression: `DocumentReference.extension.where(url = 'http://example.org/fhir/StructureDefinition/participation-agreement')`,
+                },
+            ]),
+        );
     });
 
     test(`xpath explicitly expands choice of data types and fhirPath does not`, async () => {
@@ -156,6 +184,7 @@ describe('compile', () => {
                 base: ['Consent'],
                 expression: 'Consent.source',
                 xpath: 'f:Consent/f:sourceAttachment | f:Consent/f:sourceReference',
+                target: ['ValueSet'],
             },
         ]);
         await expect(compiled).resolves.toMatchSnapshot();
@@ -216,6 +245,40 @@ describe('compile', () => {
                 base: ['Patient'],
                 expression: 'some random FHIRPath expression that cannot be parsed',
                 xpath: 'some random FHIRPath expression that cannot be parsed',
+            },
+        ]);
+        await expect(compiled).rejects.toThrowError();
+    });
+    test(`search param of type reference with no target`, async () => {
+        const compiled = compile([
+            {
+                resourceType: 'SearchParameter',
+                url: 'http://hl7.org/fhir/SearchParameter/ConceptMap-source-uri',
+                name: 'source-uri',
+                code: 'source-uri',
+                type: 'reference',
+                description: 'The source value set that contains the concepts that are being mapped',
+                base: ['ConceptMap'],
+                expression: '(ConceptMap.source as uri)',
+                xpath: 'f:ConceptMap/f:sourceUri',
+            },
+        ]);
+        await expect(compiled).rejects.toThrowError();
+    });
+
+    test(`search param of type reference with empty target`, async () => {
+        const compiled = compile([
+            {
+                resourceType: 'SearchParameter',
+                url: 'http://hl7.org/fhir/SearchParameter/ConceptMap-source-uri',
+                name: 'source-uri',
+                code: 'source-uri',
+                type: 'reference',
+                description: 'The source value set that contains the concepts that are being mapped',
+                base: ['ConceptMap'],
+                expression: '(ConceptMap.source as uri)',
+                xpath: 'f:ConceptMap/f:sourceUri',
+                target: [],
             },
         ]);
         await expect(compiled).rejects.toThrowError();

@@ -2,6 +2,113 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.10.0](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.9.4...v3.10.0) (2022-02-09)
+
+
+### Features
+
+* add extension.valueReference to search mappings ([#162](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/162)) ([7fd7057](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/7fd705758f56fb6d725d4acff080b61852bc51df))
+
+### [3.9.4](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.9.2...v3.9.4) (2022-02-03)
+
+
+### Bug Fixes
+
+* allow revinclude to return more than 10 resources ([#164](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/164)) ([b1e3a1a](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/b1e3a1aeba2a84b7f5d080ded4024bcb88169c0a))
+* chain parameters should inspect conditions to narrow down possible target types ([#168](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/168)) ([bc805cb](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/bc805cb3339a29d2f5c80bdb9a08ce425c90e752))
+
+### [3.9.3](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.9.2...v3.9.3) (2022-02-01)
+
+
+### Bug Fixes
+
+* allow revinclude to return more than 10 resources ([#164](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/164)) ([b1e3a1a](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/b1e3a1aeba2a84b7f5d080ded4024bcb88169c0a))
+
+### [3.9.2](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.9.1...v3.9.2) (2021-12-09)
+
+
+### Bug Fixes
+
+* boolean token search ([#145](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/145)) ([b3379c7](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/b3379c785430809d4223f5fe68dc6731f0070dc2))
+
+### [3.9.1](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.9.0...v3.9.1) (2021-11-12)
+
+
+### Bug Fixes
+
+* chained parameters with zero matches returns empty ([#139](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/139)) ([30290fd](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/30290fdbe15fac047b0b0a76bd4fea7e60f3d62a))
+
+## [3.8.0](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.7.0...v3.8.0) (2021-11-02)
+
+
+### Features
+
+* enable chained parameters in search ([#129](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/129)) ([2c0b1df](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/2c0b1dff2829f4b4f832d2d8ec85191e1f4c641d))
+
+## [3.7.0](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.6.0...v3.7.0) (2021-10-28)
+
+
+### Features
+
+* use sessionId as search preference ([#130](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/130)) ([85f53ee](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/85f53eeef4df2b2f680b3726580093ab79184376))
+
+## [3.6.0](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.5.2...v3.6.0) (2021-10-08)
+
+
+### Features
+
+* add class to aid in updating search mappings ([#126](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/126)) ([9219508](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/9219508bf5f314d433c83b21ffb287a91f1cad12))
+* add static search mappings ([#124](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/124)) ([e41ba1a](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/e41ba1af43b6439a050fe4f31089e9dda725ae01))
+
+
+### Bug Fixes
+
+* update IG validation to reject reference params with no target ([#123](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/123)) ([f789799](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/f789799e58e21d21fcbb410dc83cc70a31aa99e4))
+
+### [3.5.2](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.5.1...v3.5.2) (2021-09-15)
+
+
+### Bug Fixes
+
+* fix _id searches ([#119](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/119)) ([186fe78](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/186fe781d356319d16993152ec621e36a7efbdef))
+
+### [3.5.1](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.5.0...v3.5.1) (2021-09-14)
+
+
+### Bug Fixes
+
+* token search should be exact matches ([#117](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/117)) ([d106500](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/d1065003d7d04d98645f5e668423ac99ecc6120c))
+
+## [3.5.0](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.4.0...v3.5.0) (2021-09-13)
+
+
+### Features
+
+* add support for exact search modifier ([#108](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/108)) ([9bc2e32](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/9bc2e32a7718f4e1a8c24851779a22d76dcaa98f))
+* implement ":contains" modifier ([#113](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/113)) ([c513d59](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/c513d59675aaabb0b1b48023995127fa3ad3936f))
+
+## [3.4.0](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.3.0...v3.4.0) (2021-08-27)
+
+
+### Features
+
+* allow id only reference searches when valid ([#107](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/107)) ([4b1510f](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/4b1510f844d974d6a1be270ca5bc1452e5e613de))
+
+## [3.3.0](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.2.1...v3.3.0) (2021-08-17)
+
+
+### Features
+
+* implement multi-tenancy ([#102](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/102)) ([f138bdb](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/f138bdba188b7c8df0e2058362252d0fca4358d0))
+
+### [3.2.1](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.2.0...v3.2.1) (2021-08-05)
+
+
+### Bug Fixes
+
+* handle _include refs in paths with arrays ([#97](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/97)) ([b6fdac1](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/b6fdac18b738eedc99918fc7e3eed2cff2c18ee6))
+* remove duplicate Resource search params ([#98](https://github.com/awslabs/fhir-works-on-aws-search-es/issues/98)) ([570e4eb](https://github.com/awslabs/fhir-works-on-aws-search-es/commit/570e4eb3ebbafd5c73e8cc7643f6dd92b1611e01))
+
 ## [3.2.0](https://github.com/awslabs/fhir-works-on-aws-search-es/compare/v3.1.0...v3.2.0) (2021-07-28)
 
 

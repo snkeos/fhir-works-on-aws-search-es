@@ -3,18 +3,52 @@
  *  SPDX-License-Identifier: Apache-2.0
  */
 
+import { InvalidSearchParameterError } from 'fhir-works-on-aws-interface';
 import { CompiledSearchParam } from '../../FHIRSearchParametersRegistry';
+import { ReferenceSearchValue } from '../../FhirQueryParser/typeParsers/referenceParser';
+
+const SUPPORTED_MODIFIERS: string[] = [];
 
 // eslint-disable-next-line import/prefer-default-export
-export function referenceQuery(compiled: CompiledSearchParam, value: string, useKeywordSubFields: boolean): any {
-    const keywordSuffix = useKeywordSubFields ? '.keyword' : '';
+export function referenceQuery(
+    compiled: CompiledSearchParam,
+    value: ReferenceSearchValue,
+    useKeywordSubFields: boolean,
+    baseUrl: string,
+    searchParamName: string,
+    target: string[] = [],
+    modifier?: string,
+): any {
+    if (modifier && !SUPPORTED_MODIFIERS.includes(modifier)) {
+        throw new InvalidSearchParameterError(`Unsupported reference search modifier: ${modifier}`);
+    }
 
-    const fields = [`${compiled.path}.reference${keywordSuffix}`];
-    return {
-        multi_match: {
-            fields,
-            query: value,
-            lenient: true,
-        },
-    };
+    let references: string[] = [];
+    switch (value.referenceType) {
+        case 'idOnly':
+            references = target.flatMap((targetType: string) => {
+                return [`${baseUrl}/${targetType}/${value.id}`, `${targetType}/${value.id}`];
+            });
+            break;
+        case 'relative':
+            references.push(`${value.resourceType}/${value.id}`);
+            references.push(`${baseUrl}/${value.resourceType}/${value.id}`);
+            break;
+        case 'url':
+            if (value.fhirServiceBaseUrl === baseUrl) {
+                references.push(`${value.resourceType}/${value.id}`);
+            }
+            references.push(`${value.fhirServiceBaseUrl}/${value.resourceType}/${value.id}`);
+            break;
+        case 'unparseable':
+            references.push(value.rawValue);
+            break;
+        default:
+            // eslint-disable-next-line no-case-declarations
+            const exhaustiveCheck: never = value;
+            return exhaustiveCheck;
+    }
+
+    const keywordSuffix = useKeywordSubFields ? '.keyword' : '';
+    return { terms: { [`${compiled.path}.reference${keywordSuffix}`]: references } };
 }

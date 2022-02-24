@@ -14,7 +14,7 @@ It is recommended to install ts-node to execute .ts files in the command line
 
 If you are modifying the grammar at reducedFHIRPath.ne you need to compile it. The nearley compiler needs to be installed separately:
 > npm install -g nearley
-> nearleyc reducedFHIRPath.ne -o ../src/implementationGuides/reducedFHIRPath.js
+> nearleyc reducedFHIRPath.ne -o reducedFHIRPath.ts
 
 Run the script:
 > ts-node run.ts <fhirVersion>
@@ -47,6 +47,4 @@ const run = async () => {
     );
 };
 
-run()
-    .then(logger.info)
-    .catch(logger.error);
+run().then(logger.info).catch(logger.error);
