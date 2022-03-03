@@ -400,12 +400,10 @@ export class ElasticSearchService implements Search {
         hits,
         baseUrl,
         mode = 'match',
-        tenantUrl,
     }: {
         hits: any[];
         baseUrl: string;
         mode: 'match' | 'include';
-        tenantUrl?: string;
     }): SearchEntry[] {
         return hits.map((hit: any): SearchEntry => {
             // Modify to return resource with FHIR id not Dynamo ID
@@ -506,11 +504,10 @@ export class ElasticSearchService implements Search {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    private createURL(host: string, query: any, resourceType?: string, tenantUrl?: string) {
-        const resourcePath: string = tenantUrl !== undefined ? `/${tenantUrl}/${resourceType}` : `/${resourceType}`;
+    private createURL(host: string, query: any, resourceType?: string) {
         return URL.format({
             host,
-            pathname: resourcePath,
+            pathname: `/${resourceType}`,
             query,
         });
     }
