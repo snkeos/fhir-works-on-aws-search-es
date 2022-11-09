@@ -186,8 +186,8 @@ describe('queryParser', () => {
                     Object {
                       "prefix": "eq",
                       "range": Object {
-                        "end": 1999-09-09T23:59:59.999Z,
-                        "start": 1999-09-09T00:00:00.000Z,
+                        "end": 1999-09-09T21:59:59.999Z,
+                        "start": 1999-09-08T22:00:00.000Z,
                       },
                     },
                   ],

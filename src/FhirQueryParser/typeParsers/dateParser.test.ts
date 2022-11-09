@@ -15,8 +15,8 @@ describe('parseDateSearchValue', () => {
                 Object {
                   "prefix": "eq",
                   "range": Object {
-                    "end": 2020-12-31T23:59:59.999Z,
-                    "start": 2020-01-01T00:00:00.000Z,
+                    "end": 2020-12-31T22:59:59.999Z,
+                    "start": 2019-12-31T23:00:00.000Z,
                   },
                 }
             `);
@@ -26,8 +26,8 @@ describe('parseDateSearchValue', () => {
                 Object {
                   "prefix": "eq",
                   "range": Object {
-                    "end": 2020-02-29T23:59:59.999Z,
-                    "start": 2020-02-01T00:00:00.000Z,
+                    "end": 2020-02-29T22:59:59.999Z,
+                    "start": 2020-01-31T23:00:00.000Z,
                   },
                 }
             `);
@@ -37,8 +37,8 @@ describe('parseDateSearchValue', () => {
                 Object {
                   "prefix": "eq",
                   "range": Object {
-                    "end": 2020-02-02T23:59:59.999Z,
-                    "start": 2020-02-02T00:00:00.000Z,
+                    "end": 2020-02-02T22:59:59.999Z,
+                    "start": 2020-02-01T23:00:00.000Z,
                   },
                 }
             `);
@@ -48,8 +48,8 @@ describe('parseDateSearchValue', () => {
                 Object {
                   "prefix": "eq",
                   "range": Object {
-                    "end": 2020-02-02T07:07:59.999Z,
-                    "start": 2020-02-02T07:07:00.000Z,
+                    "end": 2020-02-02T06:07:59.999Z,
+                    "start": 2020-02-02T06:07:00.000Z,
                   },
                 }
             `);
@@ -59,8 +59,8 @@ describe('parseDateSearchValue', () => {
                 Object {
                   "prefix": "eq",
                   "range": Object {
-                    "end": 2020-02-02T07:07:07.999Z,
-                    "start": 2020-02-02T07:07:07.000Z,
+                    "end": 2020-02-02T06:07:07.999Z,
+                    "start": 2020-02-02T06:07:07.000Z,
                   },
                 }
             `);
@@ -70,8 +70,8 @@ describe('parseDateSearchValue', () => {
                 Object {
                   "prefix": "eq",
                   "range": Object {
-                    "end": 2020-02-02T07:07:07.777Z,
-                    "start": 2020-02-02T07:07:07.777Z,
+                    "end": 2020-02-02T06:07:07.777Z,
+                    "start": 2020-02-02T06:07:07.777Z,
                   },
                 }
             `);

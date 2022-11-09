@@ -18,8 +18,8 @@ describe('dateQuery', () => {
                   Object {
                     "range": Object {
                       "birthDate": Object {
-                        "gte": 1999-09-09T00:00:00.000Z,
-                        "lte": 1999-09-09T23:59:59.999Z,
+                        "gte": 1999-09-08T22:00:00.000Z,
+                        "lte": 1999-09-09T21:59:59.999Z,
                       },
                     },
                   },
@@ -42,14 +42,14 @@ describe('dateQuery', () => {
                               Object {
                                 "range": Object {
                                   "birthDate.start": Object {
-                                    "gte": 1999-09-09T00:00:00.000Z,
+                                    "gte": 1999-09-08T22:00:00.000Z,
                                   },
                                 },
                               },
                               Object {
                                 "range": Object {
                                   "birthDate.end": Object {
-                                    "lte": 1999-09-09T23:59:59.999Z,
+                                    "lte": 1999-09-09T21:59:59.999Z,
                                   },
                                 },
                               },
@@ -72,8 +72,8 @@ describe('dateQuery', () => {
                   Object {
                     "range": Object {
                       "birthDate": Object {
-                        "gte": 1999-09-09T00:00:00.000Z,
-                        "lte": 1999-09-09T23:59:59.999Z,
+                        "gte": 1999-09-08T22:00:00.000Z,
+                        "lte": 1999-09-09T21:59:59.999Z,
                       },
                     },
                   },
@@ -96,14 +96,14 @@ describe('dateQuery', () => {
                               Object {
                                 "range": Object {
                                   "birthDate.start": Object {
-                                    "gte": 1999-09-09T00:00:00.000Z,
+                                    "gte": 1999-09-08T22:00:00.000Z,
                                   },
                                 },
                               },
                               Object {
                                 "range": Object {
                                   "birthDate.end": Object {
-                                    "lte": 1999-09-09T23:59:59.999Z,
+                                    "lte": 1999-09-09T21:59:59.999Z,
                                   },
                                 },
                               },
@@ -129,14 +129,14 @@ describe('dateQuery', () => {
                         Object {
                           "range": Object {
                             "birthDate": Object {
-                              "gt": 1999-09-09T23:59:59.999Z,
+                              "gt": 1999-09-09T21:59:59.999Z,
                             },
                           },
                         },
                         Object {
                           "range": Object {
                             "birthDate": Object {
-                              "lt": 1999-09-09T00:00:00.000Z,
+                              "lt": 1999-09-08T22:00:00.000Z,
                             },
                           },
                         },
@@ -164,14 +164,14 @@ describe('dateQuery', () => {
                                   Object {
                                     "range": Object {
                                       "birthDate.start": Object {
-                                        "gte": 1999-09-09T00:00:00.000Z,
+                                        "gte": 1999-09-08T22:00:00.000Z,
                                       },
                                     },
                                   },
                                   Object {
                                     "range": Object {
                                       "birthDate.end": Object {
-                                        "lte": 1999-09-09T23:59:59.999Z,
+                                        "lte": 1999-09-09T21:59:59.999Z,
                                       },
                                     },
                                   },
@@ -196,7 +196,7 @@ describe('dateQuery', () => {
                   Object {
                     "range": Object {
                       "birthDate": Object {
-                        "lt": 1999-09-09T23:59:59.999Z,
+                        "lt": 1999-09-09T21:59:59.999Z,
                       },
                     },
                   },
@@ -216,7 +216,7 @@ describe('dateQuery', () => {
                         Object {
                           "range": Object {
                             "birthDate.start": Object {
-                              "lte": 1999-09-09T23:59:59.999Z,
+                              "lte": 1999-09-09T21:59:59.999Z,
                             },
                           },
                         },
@@ -236,7 +236,7 @@ describe('dateQuery', () => {
                   Object {
                     "range": Object {
                       "birthDate": Object {
-                        "lte": 1999-09-09T23:59:59.999Z,
+                        "lte": 1999-09-09T21:59:59.999Z,
                       },
                     },
                   },
@@ -256,7 +256,7 @@ describe('dateQuery', () => {
                         Object {
                           "range": Object {
                             "birthDate.start": Object {
-                              "lte": 1999-09-09T23:59:59.999Z,
+                              "lte": 1999-09-09T21:59:59.999Z,
                             },
                           },
                         },
@@ -276,7 +276,7 @@ describe('dateQuery', () => {
                   Object {
                     "range": Object {
                       "birthDate": Object {
-                        "gt": 1999-09-09T00:00:00.000Z,
+                        "gt": 1999-09-08T22:00:00.000Z,
                       },
                     },
                   },
@@ -296,7 +296,7 @@ describe('dateQuery', () => {
                         Object {
                           "range": Object {
                             "birthDate.end": Object {
-                              "gte": 1999-09-09T00:00:00.000Z,
+                              "gte": 1999-09-08T22:00:00.000Z,
                             },
                           },
                         },
@@ -316,7 +316,7 @@ describe('dateQuery', () => {
                   Object {
                     "range": Object {
                       "birthDate": Object {
-                        "gte": 1999-09-09T00:00:00.000Z,
+                        "gte": 1999-09-08T22:00:00.000Z,
                       },
                     },
                   },
@@ -336,7 +336,7 @@ describe('dateQuery', () => {
                         Object {
                           "range": Object {
                             "birthDate.end": Object {
-                              "gte": 1999-09-09T00:00:00.000Z,
+                              "gte": 1999-09-08T22:00:00.000Z,
                             },
                           },
                         },
@@ -356,7 +356,7 @@ describe('dateQuery', () => {
                   Object {
                     "range": Object {
                       "birthDate": Object {
-                        "gt": 1999-09-09T23:59:59.999Z,
+                        "gt": 1999-09-09T21:59:59.999Z,
                       },
                     },
                   },
@@ -376,7 +376,7 @@ describe('dateQuery', () => {
                         Object {
                           "range": Object {
                             "birthDate.start": Object {
-                              "gt": 1999-09-09T23:59:59.999Z,
+                              "gt": 1999-09-09T21:59:59.999Z,
                             },
                           },
                         },
@@ -396,7 +396,7 @@ describe('dateQuery', () => {
                   Object {
                     "range": Object {
                       "birthDate": Object {
-                        "lt": 1999-09-09T00:00:00.000Z,
+                        "lt": 1999-09-08T22:00:00.000Z,
                       },
                     },
                   },
@@ -416,7 +416,7 @@ describe('dateQuery', () => {
                         Object {
                           "range": Object {
                             "birthDate.end": Object {
-                              "lt": 1999-09-09T00:00:00.000Z,
+                              "lt": 1999-09-08T22:00:00.000Z,
                             },
                           },
                         },
