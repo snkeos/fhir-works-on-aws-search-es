@@ -1982,7 +1982,7 @@ Array [
                     Object {
                       "range": Object {
                         "birthDate": Object {
-                          "gte": 2019-12-31T23:00:00.000Z,
+                          "gte": 2020-01-01T00:00:00.000Z,
                         },
                       },
                     },
@@ -2002,7 +2002,7 @@ Array [
                           Object {
                             "range": Object {
                               "birthDate.end": Object {
-                                "gte": 2019-12-31T23:00:00.000Z,
+                                "gte": 2020-01-01T00:00:00.000Z,
                               },
                             },
                           },
@@ -2306,7 +2306,7 @@ Array [
                     Object {
                       "range": Object {
                         "birthDate": Object {
-                          "gte": 2019-12-31T23:00:00.000Z,
+                          "gte": 2020-01-01T00:00:00.000Z,
                         },
                       },
                     },
@@ -2326,7 +2326,7 @@ Array [
                           Object {
                             "range": Object {
                               "birthDate.end": Object {
-                                "gte": 2019-12-31T23:00:00.000Z,
+                                "gte": 2020-01-01T00:00:00.000Z,
                               },
                             },
                           },
@@ -2903,7 +2903,7 @@ Array [
                     Object {
                       "range": Object {
                         "birthDate": Object {
-                          "gt": 1989-12-31T23:00:00.000Z,
+                          "gt": 1990-01-01T00:00:00.000Z,
                         },
                       },
                     },
@@ -2923,7 +2923,7 @@ Array [
                           Object {
                             "range": Object {
                               "birthDate.end": Object {
-                                "gte": 1989-12-31T23:00:00.000Z,
+                                "gte": 1990-01-01T00:00:00.000Z,
                               },
                             },
                           },

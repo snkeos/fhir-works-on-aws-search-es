@@ -20,7 +20,7 @@
     "lint-fix": "eslint --fix . --ext .ts,.tsx",
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest src --silent --ci --testResultsProcessor=jest-junit",
+    "test": "jest src --silent",
     "test-coverage": "jest --coverage",
     "release": "yarn run build && yarn run lint && yarn run test",
     "standard-version": "standard-version --skip.tag=true",
@@ -62,7 +62,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^26.6.3",
     "jest-each": "^26.4.2",
-    "jest-junit": "^14.0.1",
     "jest-mock-extended": "^1.0.8",
     "json-stringify-pretty-compact": "^2.0.0",
     "prettier": "^2.4.1",
@@ -82,10 +81,5 @@
   },
   "jest": {
     "collectCoverage": true
-  },
-  "jest-junit": {
-    "suiteName": "jest test reports",
-    "outputDirectory": "./../test-reports",
-    "outputName": "fhir-works-on-aws-search-es-reports.xml"
   }
 }
