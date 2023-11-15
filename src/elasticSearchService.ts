@@ -64,7 +64,7 @@ export class ElasticSearchService implements Search {
 
     private readonly searchFiltersForAllQueries: SearchFilter[];
 
-    private readonly cleanUpFunction: (resource: any) => any;
+    private readonly cleanUpFunction: (resource: any) => Promise<any>;
 
     private readonly fhirVersion: FhirVersion;
 
@@ -89,7 +89,7 @@ export class ElasticSearchService implements Search {
      */
     constructor(
         searchFiltersForAllQueries: SearchFilter[] = [],
-        cleanUpFunction: (resource: any) => any = function passThrough(resource: any) {
+        cleanUpFunction: (resource: any) => any = async function passThrough(resource: any) {
             return resource;
         },
         fhirVersion: FhirVersion = '4.0.1',
@@ -224,7 +224,7 @@ export class ElasticSearchService implements Search {
             const { total, hits } = await this.executeQuery(params, request);
             const result: SearchResult = {
                 numberOfResults: total,
-                entries: this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match' }),
+                entries: await this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match' }),
                 message: '',
             };
 
@@ -425,7 +425,7 @@ export class ElasticSearchService implements Search {
             );
     }
 
-    private hitsToSearchEntries({
+    private async hitsToSearchEntries({
         hits,
         baseUrl,
         mode = 'match',
@@ -433,10 +433,10 @@ export class ElasticSearchService implements Search {
         hits: any[];
         baseUrl: string;
         mode: 'match' | 'include';
-    }): SearchEntry[] {
+    }): Promise<SearchEntry[]> {
         return hits.map((hit: any): SearchEntry => {
             // Modify to return resource with FHIR id not Dynamo ID
-            const resource = this.cleanUpFunction(hit._source);
+            const resource = await this.cleanUpFunction(hit._source);
             return {
                 search: {
                     mode,
