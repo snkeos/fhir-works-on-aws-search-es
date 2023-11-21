@@ -435,25 +435,32 @@ export class ElasticSearchService implements Search {
         baseUrl: string;
         mode: 'match' | 'include';
     }): Promise<SearchEntry[]> {
-        const results: SearchEntry[] = [];
-
-        await hits.forEach(async (hit) => {
-            // Modify to return resource with FHIR id not Dynamo ID load large resource from S3
-            const resource = await this.cleanUpFunction(hit._source);
-            if (resource) {
-                results.push({
+        const results = await Promise.all(
+            hits.map(async (hit: any): Promise<SearchEntry> => {
+                // Modify to return resource with FHIR id not Dynamo ID
+                const resource = await this.cleanUpFunction(hit._source);
+                if (resource) {
+                    return {
+                        search: {
+                            mode,
+                        },
+                        fullUrl: URL.format({
+                            host: baseUrl,
+                            pathname: `/${resource.resourceType}/${resource.id}`,
+                        }),
+                        resource,
+                    };
+                }
+                return {
                     search: {
                         mode,
                     },
-                    fullUrl: URL.format({
-                        host: baseUrl,
-                        pathname: `/${resource.resourceType}/${resource.id}`,
-                    }),
-                    resource,
-                });
-            }
-        });
-        return results;
+                    fullUrl: '',
+                    resource: {},
+                };
+            }),
+        );
+        return results.filter((x) => x.fullUrl !== '');
     }
 
     private async processSearchInclusions(
