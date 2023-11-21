@@ -434,11 +434,13 @@ export class ElasticSearchService implements Search {
         baseUrl: string;
         mode: 'match' | 'include';
     }): Promise<SearchEntry[]> {
-        return Promise.all(
-            hits.map(async (hit: any): Promise<SearchEntry> => {
-                // Modify to return resource with FHIR id not Dynamo ID
-                const resource = await this.cleanUpFunction(hit._source);
-                return {
+        const results: SearchEntry[] = [];
+
+        await hits.forEach(async (hit) => {
+            // Modify to return resource with FHIR id not Dynamo ID load large resource from S3
+            const resource = await this.cleanUpFunction(hit._source);
+            if (resource) {
+                results.push({
                     search: {
                         mode,
                     },
@@ -447,9 +449,10 @@ export class ElasticSearchService implements Search {
                         pathname: `/${resource.resourceType}/${resource.id}`,
                     }),
                     resource,
-                };
-            }),
-        );
+                });
+            }
+        });
+        return results;
     }
 
     private async processSearchInclusions(
