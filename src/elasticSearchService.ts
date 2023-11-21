@@ -222,9 +222,10 @@ export class ElasticSearchService implements Search {
                 );
             }
             const { total, hits } = await this.executeQuery(params, request);
+            const entries = await this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match' });
             const result: SearchResult = {
-                numberOfResults: total,
-                entries: await this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match' }),
+                numberOfResults: total - (hits.length - entries.length),
+                entries,
                 message: '',
             };
 
