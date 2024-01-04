@@ -50,7 +50,7 @@
     "@types/jest": "^26.0.19",
     "@types/lodash": "^4.14.161",
     "@types/nearley": "^2.11.1",
-    "@types/node": "^14",
+    "@types/node": "^18",
     "@types/qs": "^6.9.7",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
@@ -78,7 +78,7 @@
     "url": "git://github.com/awslabs/fhir-works-on-aws-search-es.git"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "jest": {
     "collectCoverage": true
