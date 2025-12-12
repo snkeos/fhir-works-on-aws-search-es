@@ -31,7 +31,7 @@
   "dependencies": {
     "@aws-sdk/client-sns": "3.50.0",
     "@aws-sdk/node-http-handler": "3.52.0",
-    "@elastic/elasticsearch": "7.13",
+    "@elastic/elasticsearch": "7.13.0",
     "@types/aws-lambda": "8.10.92",
     "aws-elasticsearch-connector": "8.2.0",
     "aws-sdk": "2.1072.0",
