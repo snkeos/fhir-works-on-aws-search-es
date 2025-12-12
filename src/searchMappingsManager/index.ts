@@ -59,6 +59,8 @@ export class SearchMappingsManager {
         const resourceTypesWithErrors = [];
         for (const [resourceType, mappings] of Object.entries(this.searchMappings)) {
             try {
+                console.log(`Log mapping for ${resourceType}:`, JSON.stringify(mappings));
+
                 if (!(await this.indexExists(resourceType))) {
                     console.log(`index for ${resourceType} was not found. It will be created`);
                     await this.createIndexWithMapping(resourceType, mappings);
@@ -89,11 +91,17 @@ export class SearchMappingsManager {
     }
 
     async indexExists(resourceType: string): Promise<boolean> {
-        return (
-            await this.searchClient.indices.exists({
-                index: toIndexName(resourceType),
-            })
-        ).body;
+        try {
+            return  (
+                await this.searchClient.indices.exists({
+                    index: toIndexName(resourceType),
+                })
+            ).body;
+        } catch(e)
+        {
+            console.log(e);
+            return false;
+        }
     }
 
     async updateMapping(resourceType: string, mapping: any) {
