@@ -29,12 +29,12 @@
     "prepublish": "tsc"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "3.50.0",
-    "@aws-sdk/node-http-handler": "3.52.0",
-    "@elastic/elasticsearch": "7.13",
-    "@types/aws-lambda": "8.10.92",
-    "aws-elasticsearch-connector": "8.2.0",
-    "aws-sdk": "2.1072.0",
+    "@aws-sdk/client-sns": "3.267.0",
+    "@aws-sdk/node-http-handler": "3.267.0",
+    "@elastic/elasticsearch": "7.13.0",
+    "@types/aws-lambda": "8.10.109",
+    "aws-elasticsearch-connector": "8.3.0",
+    "aws-sdk": "2.1303.0",
     "aws-xray-sdk": "3.3.4",
     "date-fns": "2.19.0",
     "fhir-works-on-aws-interface": "link:../fhir-works-on-aws-interface",
