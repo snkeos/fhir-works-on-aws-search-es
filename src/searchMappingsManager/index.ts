@@ -91,17 +91,12 @@ export class SearchMappingsManager {
     }
 
     async indexExists(resourceType: string): Promise<boolean> {
-        try {
-            return  (
-                await this.searchClient.indices.exists({
-                    index: toIndexName(resourceType),
-                })
-            ).body;
-        } catch(e)
-        {
-            console.log(e);
-            return false;
-        }
+        return (
+            await this.searchClient.indices.exists({
+                index: toIndexName(resourceType),
+            })
+        ).body;
+
     }
 
     async updateMapping(resourceType: string, mapping: any) {
